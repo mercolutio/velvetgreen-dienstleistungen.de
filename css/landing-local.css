@@ -111,10 +111,14 @@
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-darker) 100%);
+    position: relative;
+    background: radial-gradient(ellipse at top left, #1a2f23 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, var(--color-green-dark) 0%, transparent 50%),
+                linear-gradient(135deg, #0d1117 0%, var(--color-darker) 100%);
     color: var(--color-white);
     padding: var(--spacing-xxl) 0;
     text-align: center;
+    overflow: hidden;
 }
 
 .hero-section.local-hero {
