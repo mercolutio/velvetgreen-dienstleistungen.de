@@ -472,33 +472,39 @@
                         </div>
                     </div>
                 </div>
-                <form id="contact-form" class="contact-form" action="contact-handler.php" method="POST">
-                    <div class="form-group">
-                        <label for="name">Name *</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-Mail *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Telefon *</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Ihre Nachricht *</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                    </div>
-                    <div class="form-group checkbox-group">
-                        <label>
-                            <input type="checkbox" name="privacy" required>
-                            Ich habe die <a href="datenschutz.php" target="_blank">Datenschutzerklärung</a> zur Kenntnis genommen.
-                        </label>
-                    </div>
-                    <button type="submit" class="btn-primary btn-large">
-                        <i class="fas fa-paper-plane"></i> Nachricht senden
-                    </button>
-                </form>
+                <form class="contact-form" id="contactForm">
+                        <!-- Honeypot field for spam protection (hidden from users) -->
+                        <input type="text" name="website" style="display:none;" tabindex="-1" autocomplete="off">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-Mail *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Telefon *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Ihre Nachricht *</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <div class="form-group checkbox">
+                            <input type="checkbox" id="privacy" name="privacy" required>
+                            <label for="privacy">Ich habe die Datenschutzerklärung gelesen und stimme zu. *</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <span>Anfrage senden</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
             </div>
         </div>
     </section>
