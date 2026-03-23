@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Vielen Dank für Ihre Anfrage | Velvet Green</title>
+    <meta name="description" content="Vielen Dank für Ihre Anfrage. Wir melden uns innerhalb von 2 Stunden bei Ihnen.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17965662320"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-17965662320');
+    </script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/landingpage.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <style>
+        /* Additional styles for Thank You page */
+        .thankyou-hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1d21 0%, #32373c 50%, #2d4a3e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thankyou-container {
+            max-width: 700px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .thankyou-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, #fcd98f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: checkmarkPop 0.6s ease-out;
+            box-shadow: 0 10px 40px var(--color-primary-glow);
+        }
+
+        .thankyou-icon i {
+            font-size: 4rem;
+            color: var(--color-white);
+        }
+
+        @keyframes checkmarkPop {
+            0% {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .thankyou-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .thankyou-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .thankyou-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .thankyou-steps {
+            text-align: left;
+            margin: 2rem 0;
+        }
+
+        .thankyou-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--border-radius);
+        }
+
+        .thankyou-step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary);
+            color: var(--color-black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .thankyou-step-content h3 {
+            color: var(--color-white);
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+        }
+
+        .thankyou-step-content p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9375rem;
+            margin: 0;
+        }
+
+        .thankyou-phone-cta {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #fcd98f 100%);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            margin: 2rem 0;
+            box-shadow: 0 8px 30px var(--color-primary-glow);
+        }
+
+        .thankyou-phone-cta h3 {
+            color: var(--color-black);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .thankyou-phone-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--color-black);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .thankyou-phone-number:hover {
+            transform: scale(1.05);
+        }
+
+        .thankyou-phone-hours {
+            font-size: 0.9375rem;
+            color: rgba(0, 0, 0, 0.7);
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .thankyou-title {
+                font-size: 1.75rem;
+            }
+
+            .thankyou-subtitle {
+                font-size: 1rem;
+            }
+
+            .thankyou-icon {
+                width: 90px;
+                height: 90px;
+            }
+
+            .thankyou-icon i {
+                font-size: 3rem;
+            }
+
+            .thankyou-phone-number {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+
+    <!-- ==================== THANK YOU HERO ==================== -->
+    <section class="thankyou-hero">
+        <!-- Floating Decorative Blobs -->
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+
+        <div class="thankyou-container">
+            <!-- Success Icon -->
+            <div class="thankyou-icon">
+                <i class="fas fa-check"></i>
+            </div>
+
+            <!-- Main Message -->
+            <h1 class="thankyou-title">
+                Vielen Dank für Ihre Anfrage!
+            </h1>
+            <p class="thankyou-subtitle">
+                Ihre Nachricht ist bei uns eingegangen. Wir melden uns innerhalb von 2 Stunden bei Ihnen zurück.
+            </p>
+
+            <!-- What Happens Next -->
+            <div class="thankyou-card">
+                <h2 style="color: var(--color-white); margin-bottom: 1.5rem; font-size: 1.5rem;">
+                    So geht es weiter:
+                </h2>
+
+                <div class="thankyou-steps">
+                    <div class="thankyou-step">
+                        <div class="thankyou-step-number">1</div>
+                        <div class="thankyou-step-content">
+                            <h3>Wir prüfen Ihre Anfrage</h3>
+                            <p>Unser Team schaut sich Ihre Angaben an und bereitet die Besichtigung vor.</p>
+                        </div>
+                    </div>
+
+                    <div class="thankyou-step">
+                        <div class="thankyou-step-number">2</div>
+                        <div class="thankyou-step-content">
+                            <h3>Rückruf innerhalb von 2 Stunden</h3>
+                            <p>Wir melden uns telefonisch bei Ihnen und vereinbaren einen Termin für die kostenlose Besichtigung.</p>
+                        </div>
+                    </div>
+
+                    <div class="thankyou-step">
+                        <div class="thankyou-step-number">3</div>
+                        <div class="thankyou-step-content">
+                            <h3>Kostenlose Besichtigung vor Ort</h3>
+                            <p>Wir kommen zu Ihnen, schauen uns alles an und erstellen ein unverbindliches Festpreis-Angebot.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Urgent Phone CTA -->
+            <div class="thankyou-phone-cta">
+                <h3>
+                    <i class="fas fa-bolt"></i> Dringend? Rufen Sie uns jetzt an!
+                </h3>
+                <a href="tel:+4953412884770" class="thankyou-phone-number">
+                    <i class="fas fa-phone"></i>
+                    05341 288 477 0
+                </a>
+                <p class="thankyou-phone-hours">
+                    <i class="fas fa-clock"></i> Montag - Samstag, 7:00 - 18:00 Uhr
+                </p>
+            </div>
+
+            <!-- Back to Homepage -->
+            <a href="index.html" class="lp-btn lp-btn--secondary lp-btn--large" style="display: inline-flex; margin-top: 2rem;">
+                <i class="fas fa-home"></i>
+                Zurück zur Startseite
+            </a>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="lp-footer">
+        <div class="lp-container">
+            <div class="lp-footer__brand">
+                <img src="images/logo.svg" alt="Velvet Green Dienstleistungen" class="lp-footer__logo">
+            </div>
+            <address class="lp-footer__address">
+                Seyyithan Altan<br>
+                In den Blumentriften 30, 38226 Salzgitter<br>
+                Tel: <a href="tel:+4953412884770" style="color: var(--color-white); text-decoration: none;">05341 288 477 0</a>
+            </address>
+
+            <div class="lp-footer__links">
+                <a href="impressum.php" class="lp-footer__link">Impressum</a>
+                <a href="datenschutz.php" class="lp-footer__link">Datenschutz</a>
+                <a href="agb.php" class="lp-footer__link">AGB</a>
+            </div>
+
+            <div class="lp-footer__copyright">
+                © 2026 Velvet Green Dienstleistungen. Alle Rechte vorbehalten.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Track page view time for analytics
+        const startTime = Date.now();
+
+        window.addEventListener('beforeunload', () => {
+            const timeOnPage = Math.round((Date.now() - startTime) / 1000);
+            console.log('Time on Thank You page:', timeOnPage, 'seconds');
+
+            // Optional: Send to Google Analytics
+            // gtag('event', 'thankyou_page_time', { seconds: timeOnPage });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+  <defs>
+    <style>
+      .logo-main {
+        font-family: 'Palatino', 'Times New Roman', serif;
+        font-size: 62px;
+        font-weight: 400;
+        letter-spacing: 6px;
+        fill: #E8C89A;
+      }
+      .logo-sub {
+        font-family: 'Palatino', 'Times New Roman', serif;
+        font-size: 26px;
+        font-weight: 300;
+        letter-spacing: 8px;
+        fill: #E8C89A;
+      }
+      .logo-line {
+        stroke: #E8C89A;
+        stroke-width: 1;
+        fill: none;
+      }
+    </style>
+  </defs>
+
+  <!-- Main Text: VELVET GREEN -->
+  <text x="400" y="85" text-anchor="middle" class="logo-main">VELVET GREEN</text>
+
+  <!-- Line before DIENSTLEISTUNGEN -->
+  <line x1="50" y1="135" x2="165" y2="135" class="logo-line"/>
+
+  <!-- Subtitle: DIENSTLEISTUNGEN -->
+  <text x="400" y="143" text-anchor="middle" class="logo-sub">DIENSTLEISTUNGEN</text>
+
+  <!-- Line after DIENSTLEISTUNGEN -->
+  <line x1="635" y1="135" x2="750" y2="135" class="logo-line"/>
+</svg>

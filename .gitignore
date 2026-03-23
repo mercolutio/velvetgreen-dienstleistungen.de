@@ -1,0 +1,7 @@
+.DS_Store
+.ftpquota
+admin/error_log
+contact-log.txt
+webhook-log.txt
+emergency-debug.php
+contact-handler-debug.php

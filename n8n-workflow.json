@@ -1,0 +1,314 @@
+{
+  "name": "SEO Agent Velvetgreen",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Schreibe einen SEO-optimierten Blogartikel über \"{{ $('Keyword auswählen').item.json.keyword }}\" mit mindestens 1200 Wörtern.\n\nDer Artikel soll modern und lebendig wirken mit abwechslungsreichen Satzstrukturen.\n\nAusgabeformat: Reines HTML ohne Markdown.\n\nBild einfügen:\n<img src=\"{{ $json.photos[0].url }}\" alt=\"{{ $('Keyword auswählen').item.json.keyword }} Ratgeber\" title=\"{{ $('Keyword auswählen').item.json.keyword }}\" loading=\"lazy\" width=\"1200\" height=\"800\">\n\nStruktur:\n- h1 Titel mit Keyword\n- Einleitung mit direkter Ansprache\n- Hauptteil mit h2/h3 Zwischenüberschriften\n- Schritt-für-Schritt-Anleitung\n- Checkliste\n- Tabelle mit Kostenübersicht\n- FAQ-Bereich mit 3-5 Fragen\n- Fazit\n- CTA: Jetzt kostenlose Beratung sichern\n\nSEO:\n- Keyword natürlich einbauen\n- 5 Longtail-Keywords verwenden\n- 1-2 externe Links zu seriösen Quellen\n- Direkte Leseransprache mit du\n- Storytelling-Elemente",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [1120, 0],
+      "id": "llm-chain",
+      "name": "Artikel erstellen"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [1200, 224],
+      "id": "openai-model",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 4,
+              "triggerAtMinute": 50
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0],
+      "id": "schedule",
+      "name": "Täglich um 04:50"
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "prompt": {
+          "messages": [
+            {
+              "role": "system",
+              "content": "Übersetze Keywords ins Englische. Nur das Ergebnis zurückgeben."
+            },
+            {
+              "content": "={{$json.keyword}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "translator",
+      "name": "Übersetzer",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [672, 0]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "=https://api.pexels.com/v1/search?query={{ $json.message.content }}&per_page=1",
+        "options": {}
+      },
+      "id": "pexels",
+      "name": "Pexels Bild",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [896, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://velvetgreen-dienstleistungen.de/wp-json/keyword-manager/v1/keywords/unprocessed",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [224, 0],
+      "id": "get-keyword",
+      "name": "Keyword holen"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nif (items.length > 0) {\n  return [{ json: items[0].json }];\n}\nreturn [];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [448, 0],
+      "id": "select-keyword",
+      "name": "Keyword auswählen"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://velvetgreen-dienstleistungen.de/wp-json/wp/v2/posts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $('Keyword auswählen').item.json.keyword }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1472, 0],
+      "id": "publish-post",
+      "name": "Beitrag veröffentlichen"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://velvetgreen-dienstleistungen.de/wp-json/keyword-manager/v1/keywords/{{ $('Keyword auswählen').item.json.id }}/process",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "processed",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1920, 0],
+      "id": "mark-processed",
+      "name": "Als erledigt markieren"
+    },
+    {
+      "parameters": {
+        "fromEmail": "automations@mercolutio.eu",
+        "toEmail": "d.schloesser@mercolutio.com",
+        "subject": "=Neuer Blogartikel: {{ $('Keyword auswählen').item.json.keyword }}",
+        "html": "=<h2>Neuer Artikel veröffentlicht</h2><p>Keyword: {{ $('Keyword auswählen').item.json.keyword }}</p><p>Link: <a href=\"{{ $('Beitrag veröffentlichen').item.json.link }}\">Artikel ansehen</a></p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [2144, 0],
+      "id": "send-email",
+      "name": "E-Mail senden"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://velvetgreen-dienstleistungen.de/wp-json/wp/v2/posts/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "yoast_description",
+              "value": "=SEO Ratgeber zu {{ $('Keyword auswählen').item.json.keyword }} - Tipps Kosten und mehr"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1696, 0],
+      "id": "meta-desc",
+      "name": "Meta Description"
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Artikel erstellen",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Artikel erstellen": {
+      "main": [
+        [
+          {
+            "node": "Beitrag veröffentlichen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Täglich um 04:50": {
+      "main": [
+        [
+          {
+            "node": "Keyword holen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pexels Bild": {
+      "main": [
+        [
+          {
+            "node": "Artikel erstellen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Übersetzer": {
+      "main": [
+        [
+          {
+            "node": "Pexels Bild",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keyword holen": {
+      "main": [
+        [
+          {
+            "node": "Keyword auswählen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keyword auswählen": {
+      "main": [
+        [
+          {
+            "node": "Übersetzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Beitrag veröffentlichen": {
+      "main": [
+        [
+          {
+            "node": "Meta Description",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Als erledigt markieren": {
+      "main": [
+        [
+          {
+            "node": "E-Mail senden",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meta Description": {
+      "main": [
+        [
+          {
+            "node": "Als erledigt markieren",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,34 @@
+# robots.txt für Velvet Green Dienstleistungen
+# https://velvetgreen-dienstleistungen.de
+
+User-agent: *
+Allow: /
+Allow: /blog/
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /wp-json/
+
+# Disallow debug files
+Disallow: /emergency-debug.php
+Disallow: /contact-handler-debug.php
+
+# Disallow data directories
+Disallow: /admin/data/
+Disallow: /blog/data/
+
+# Allow search engines to index key pages
+Allow: /index.html
+Allow: /entruempelung.html
+Allow: /impressum.php
+Allow: /datenschutz.php
+Allow: /agb.php
+
+# Sitemap location
+Sitemap: https://velvetgreen-dienstleistungen.de/sitemap.xml
+
+# Crawl delay (optional - prevents overload)
+Crawl-delay: 1

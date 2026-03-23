@@ -1,0 +1,18 @@
+RewriteEngine On
+RewriteBase /wp-json/
+
+# Pass HTTP Authorization header through Apache
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# CGI/FastCGI: Convert Authorization header to PHP variables
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+# Keyword Manager API
+RewriteRule ^keyword-manager/v1/keywords/unprocessed$ keyword-manager/v1/keywords.php [L]
+RewriteRule ^keyword-manager/v1/keywords/([0-9]+)/process$ keyword-manager/v1/keywords.php [L]
+RewriteRule ^keyword-manager/v1/keywords$ keyword-manager/v1/keywords.php [L]
+
+# WordPress Posts API
+RewriteRule ^wp/v2/posts/([0-9]+)$ wp/v2/posts.php [L]
+RewriteRule ^wp/v2/posts$ wp/v2/posts.php [L]

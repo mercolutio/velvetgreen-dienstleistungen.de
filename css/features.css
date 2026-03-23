@@ -1,0 +1,376 @@
+/* ===================================
+   ADVANCED FEATURES CSS
+   Before/After, Ticker, FAQ, Dark Mode, etc.
+   =================================== */
+
+/* ===================================
+   BEFORE/AFTER SLIDER
+   =================================== */
+.before-after-section {
+    padding: var(--spacing-xxl) 0;
+    background: linear-gradient(135deg, var(--color-gray-lighter) 0%, var(--color-white) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.before-after-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.before-after-slider {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 30px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.before-image,
+.after-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.after-image {
+    clip-path: inset(0 50% 0 0);
+    transition: clip-path 0.3s ease;
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: var(--color-white);
+}
+
+.before-placeholder {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-green-dark) 100%);
+}
+
+.after-placeholder {
+    background: linear-gradient(135deg, var(--color-green) 0%, var(--color-green-light) 100%);
+}
+
+.image-placeholder i {
+    font-size: 6rem;
+    margin-bottom: var(--spacing-md);
+    animation: float 3s ease-in-out infinite;
+}
+
+.image-placeholder p {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+.slider-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: ew-resize;
+    z-index: 10;
+}
+
+.slider-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 4px;
+    height: 100%;
+    background: var(--color-primary);
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 5;
+    box-shadow: 0 0 20px var(--color-primary-glow);
+    transition: left 0.3s ease;
+}
+
+.slider-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 4px 20px var(--color-primary-glow),
+        inset 0 -2px 10px rgba(0, 0, 0, 0.2),
+        inset 0 2px 10px rgba(255, 255, 255, 0.5);
+    animation: buttonPulse 2s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+.slider-button i {
+    font-size: 1.5rem;
+    color: var(--color-dark);
+}
+
+/* ===================================
+   INFINITE TICKER
+   =================================== */
+.infinite-ticker {
+    background: linear-gradient(90deg, var(--color-green-dark) 0%, var(--color-dark) 50%, var(--color-green-dark) 100%);
+    padding: var(--spacing-lg) 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.infinite-ticker::before,
+.infinite-ticker::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.infinite-ticker::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--color-green-dark) 0%, transparent 100%);
+}
+
+.infinite-ticker::after {
+    right: 0;
+    background: linear-gradient(90deg, transparent 0%, var(--color-green-dark) 100%);
+}
+
+.ticker-content {
+    display: flex;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+}
+
+.ticker-content span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 0 var(--spacing-xl);
+    color: var(--color-white);
+    font-size: var(--font-size-large);
+    font-weight: 600;
+}
+
+.ticker-content span i {
+    color: var(--color-primary);
+    font-size: 1.5rem;
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* ===================================
+   FAQ ACCORDION
+   =================================== */
+.faq-section {
+    padding: var(--spacing-xxl) 0;
+    background: var(--color-white);
+}
+
+.faq-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: var(--color-gray-lighter);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-md);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.faq-item:hover {
+    border-color: var(--color-green-light);
+}
+
+.faq-item.active {
+    background: linear-gradient(135deg, rgba(74, 124, 89, 0.05) 0%, var(--color-white) 100%);
+    border-color: var(--color-green);
+    box-shadow: 0 8px 24px var(--color-green-glow);
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    cursor: pointer;
+    user-select: none;
+}
+
+.faq-question h3 {
+    color: var(--color-dark);
+    font-size: 1.25rem;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.faq-item:hover .faq-question h3 {
+    color: var(--color-green);
+}
+
+.faq-question i {
+    font-size: 1.25rem;
+    color: var(--color-green);
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+}
+
+.faq-answer p {
+    color: var(--color-gray);
+    line-height: 1.8;
+    margin: 0;
+}
+
+
+/* ===================================
+   SOCIAL PROOF NOTIFICATIONS
+   =================================== */
+.social-proof {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background: var(--color-white);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    max-width: 350px;
+    z-index: 999;
+    opacity: 0;
+    transform: translateX(-400px);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-left: 4px solid var(--color-green);
+}
+
+.social-proof.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.social-proof-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--color-green) 0%, var(--color-green-light) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.social-proof-icon i {
+    color: var(--color-white);
+    font-size: 1.5rem;
+}
+
+.social-proof-content h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-dark);
+}
+
+.social-proof-content p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--color-gray);
+}
+
+.social-proof-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: var(--color-gray);
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 4px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.social-proof-close:hover {
+    opacity: 1;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media (max-width: 768px) {
+    .before-after-slider {
+        height: 400px;
+    }
+
+    .image-placeholder i {
+        font-size: 4rem;
+    }
+
+    .image-placeholder p {
+        font-size: 1.5rem;
+    }
+
+    .ticker-content span {
+        font-size: var(--font-size-base);
+        padding: 0 var(--spacing-md);
+    }
+
+    .social-proof {
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
+        max-width: none;
+    }
+}
