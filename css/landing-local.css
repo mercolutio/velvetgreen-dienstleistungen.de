@@ -3,6 +3,78 @@
    For city/district-specific pages
    =================================== */
 
+/* Navbar fix for landing pages (uses .nav-content instead of .nav-wrapper) */
+.navbar {
+    background: var(--color-darker);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    text-decoration: none;
+    color: var(--color-white);
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.logo i {
+    color: var(--color-green);
+    margin-right: 6px;
+}
+
+.nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    display: block;
+    width: 28px;
+    height: 3px;
+    background-color: var(--color-white);
+    transition: var(--transition);
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--color-darker);
+        flex-direction: column;
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+}
+
 /* Breadcrumb */
 .breadcrumb-section {
     background: var(--color-gray-lighter);
