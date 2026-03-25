@@ -54,6 +54,54 @@ Velvet Green Dienstleistungen — a German local SEO website for junk removal an
 | `.htaccess` | Security headers, file protection, GZIP, caching rules |
 | `n8n-workflow.json` | n8n automation workflow config |
 
+## Landing Page Workflow
+
+### Schritt 1: Autonome Keyword-Recherche & Thema wählen
+
+**Kein fixer Queue. Du bist der SEO-Experte — entscheide selbst.**
+
+1. Liste alle bereits vorhandenen Seiten:
+   ```
+   ./generate-single-landing-page.sh --list-done
+   ```
+   Ausgabe: `SERVICE|SLUG` pro Zeile (z.B. `messiewohnung|goslar`).
+
+2. Führe **2–3 gezielte WebSearches** durch, um das beste nächste Thema zu finden:
+   - Suche nach Kombinationen aus Service × Ort, die noch nicht abgedeckt sind
+   - Denke in konzentrischen Kreisen um Salzgitter: Städte → Kleinstädte → Gemeinden → Dörfer
+   - Relevante Landkreise: Salzgitter, Wolfenbüttel, Goslar, Peine, Hildesheim, Helmstedt, Gifhorn, Wolfsburg, Northeim, Osterode
+   - Auch kleine Orte können wertvolle Long-Tail-Keywords haben (wenig Konkurrenz, klarer lokaler Intent)
+   - Suche z.B.: `"Entrümpelung Bockenem"`, `"Haushaltsauflösung Seesen"`, `"Messiewohnung Clausthal-Zellerfeld"` — was rankt schon, wie stark ist der Wettbewerb?
+
+3. Wähle die Kombination mit dem besten Potenzial nach diesen Kriterien:
+   - **Noch nicht vorhanden** (aus --list-done)
+   - **Lokaler Suchintent erkennbar** (Menschen suchen aktiv nach diesem Service in diesem Ort)
+   - **Geringer Wettbewerb** (wenige spezialisierte Mitbewerber für genau diese Kombination)
+   - **Realistisches Einzugsgebiet** (max. ~80 km von Salzgitter — Anfahrt zumutbar)
+   - **Einwohnerzahl/Kaufkraft** als Proxy für Nachfragepotenzial
+
+4. Notiere deine Entscheidung: Service, Ortsname, Slug, GPS-Koordinaten, Ortsteile.
+
+5. Generiere das HTML-Grundgerüst:
+   ```
+   ./generate-single-landing-page.sh --create SERVICE SLUG "NAME" LAT LON "BESCHREIBUNG" "ORTSTEIL1,ORTSTEIL2,..."
+   ```
+   Beispiel:
+   ```
+   ./generate-single-landing-page.sh --create haushaltsaufloesung bockenem "Bockenem" 51.9994 10.1339 "Bockenem und dem Leinebergland" "Kernstadt,Mahlum,Hary,Bönnien,Eberholzen"
+   ```
+
+### Services (5 verfügbar)
+| Slug | Anzeige |
+|------|---------|
+| `entruempelung` | Entrümpelung |
+| `gewerbe` | Gewerbeentrümpelung |
+| `haushaltsaufloesung` | Haushaltsauflösung |
+| `kellerentruempelung` | Kellerentrümpelung |
+| `messiewohnung` | Messiewohnung |
+
+---
+
 ## Benachrichtigungssystem (überschreibt Schritt 6 im System-Prompt)
 
 **WICHTIG:** Curl-Webhooks an n8n.mercolutio.eu sind in dieser Umgebung geblockt.
