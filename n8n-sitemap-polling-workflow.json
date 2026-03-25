@@ -1,0 +1,154 @@
+{
+  "name": "Velvetgreen – Landing Page Notifier (Stündliches Polling)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000001",
+      "name": "Jede Stunde",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://velvetgreen-dienstleistungen.de/sitemap.xml",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "a1b2c3d4-0002-0002-0002-000000000002",
+      "name": "Sitemap abrufen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sitemap XML parsen und neueste Seite erkennen\nconst xml = $input.first().json.data || $input.first().json.body || '';\n\n// Alle <url>-Blöcke extrahieren\nconst entries = [];\nconst urlBlockRegex = /<url>([\\s\\S]*?)<\\/url>/g;\nlet match;\nwhile ((match = urlBlockRegex.exec(xml)) !== null) {\n  const block = match[1];\n  const locMatch = block.match(/<loc>([^<]+)<\\/loc>/);\n  const modMatch = block.match(/<lastmod>([^<]+)<\\/lastmod>/);\n  if (locMatch) {\n    entries.push({\n      url: locMatch[1].trim(),\n      lastmod: modMatch ? modMatch[2 - 1].trim() : ''\n    });\n  }\n}\n\nconst totalCount = entries.length;\nif (totalCount === 0) {\n  return [{ json: { hasNew: false, debug: 'Keine URLs gefunden' } }];\n}\n\n// Neuester Eintrag = letzter in der Sitemap\nconst newest = entries[entries.length - 1];\n\n// Gespeicherten Stand laden\nconst stored = $getWorkflowStaticData('global');\nconst prevCount = stored.urlCount || 0;\nconst prevLastUrl = stored.lastUrl || '';\n\n// Neu wenn Anzahl gestiegen oder URL anders\nconst hasNew = totalCount > prevCount || newest.url !== prevLastUrl;\n\nif (hasNew) {\n  // Stand aktualisieren\n  stored.urlCount = totalCount;\n  stored.lastUrl = newest.url;\n  \n  // Lesbaren Seitennamen erzeugen\n  const filename = newest.url.split('/').pop().replace('.html', '');\n  const pageName = filename.replace(/-/g, ' ')\n    .replace(/\\b\\w/g, c => c.toUpperCase());\n  \n  return [{ json: {\n    hasNew: true,\n    pageUrl: newest.url,\n    pageLastmod: newest.lastmod,\n    pageName,\n    totalCount,\n    prevCount,\n    newCount: totalCount - prevCount\n  }}];\n}\n\nreturn [{ json: { hasNew: false, totalCount, lastUrl: newest.url } }];"
+      },
+      "id": "a1b2c3d4-0003-0003-0003-000000000003",
+      "name": "Vergleichen & Erkennen",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-has-new",
+              "leftValue": "={{ $json.hasNew }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0004-0004-0004-000000000004",
+      "name": "Neue Seite?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.mercolutio.eu/webhook/velvetgreen-landing-page",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"subject\": \"Neue Landing Page: {{ $json.pageName }}\",\n  \"html_body\": \"<h2>Hallo Deniz,</h2><p>Das stündliche Sitemap-Polling hat eine neue Landing Page erkannt:</p><p><a href='{{ $json.pageUrl }}' style='font-size:16px;font-weight:bold;color:#2d6a4f;'>{{ $json.pageUrl }}</a></p><table style='border-collapse:collapse;margin:16px 0;font-family:Arial;font-size:14px;'><tr style='background:#f0f0f0'><th style='padding:8px 12px;text-align:left;border-bottom:2px solid #ddd;'>Info</th><th style='padding:8px 12px;text-align:left;border-bottom:2px solid #ddd;'>Wert</th></tr><tr><td style='padding:8px 12px;border-bottom:1px solid #eee;'>Seite</td><td style='padding:8px 12px;border-bottom:1px solid #eee;'>{{ $json.pageName }}</td></tr><tr style='background:#fafafa'><td style='padding:8px 12px;border-bottom:1px solid #eee;'>Stand</td><td style='padding:8px 12px;border-bottom:1px solid #eee;'>{{ $json.pageLastmod }}</td></tr><tr><td style='padding:8px 12px;border-bottom:1px solid #eee;'>Gesamt URLs</td><td style='padding:8px 12px;border-bottom:1px solid #eee;'>{{ $json.totalCount }} (+ {{ $json.newCount }} neu)</td></tr></table><p>Viele Grüße,<br><strong>n8n Polling Agent</strong></p>\"\n}"
+      },
+      "id": "a1b2c3d4-0005-0005-0005-000000000005",
+      "name": "Webhook Benachrichtigung",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 200]
+    }
+  ],
+  "connections": {
+    "Jede Stunde": {
+      "main": [
+        [
+          {
+            "node": "Sitemap abrufen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sitemap abrufen": {
+      "main": [
+        [
+          {
+            "node": "Vergleichen & Erkennen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vergleichen & Erkennen": {
+      "main": [
+        [
+          {
+            "node": "Neue Seite?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Neue Seite?": {
+      "main": [
+        [
+          {
+            "node": "Webhook Benachrichtigung",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0
+}
