@@ -54,6 +54,26 @@ Velvet Green Dienstleistungen — a German local SEO website for junk removal an
 | `.htaccess` | Security headers, file protection, GZIP, caching rules |
 | `n8n-workflow.json` | n8n automation workflow config |
 
+## Benachrichtigungssystem (überschreibt Schritt 6 im System-Prompt)
+
+**WICHTIG:** Curl-Webhooks an n8n.mercolutio.eu sind in dieser Umgebung geblockt.
+Stattdessen gilt für Schritt 6:
+
+1. Lies `pending-notifications.json` aus dem Projekt-Root
+2. Füge einen neuen Eintrag ans Ende des Arrays an:
+   ```json
+   {
+     "id": "[service]-[stadt]",
+     "subject": "Neue Landing Page: [Service] [Stadt]",
+     "html_body": "...vollständiges HTML der Benachrichtigungs-E-Mail..."
+   }
+   ```
+3. Die `html_body` enthält dieselben Inhalte wie zuvor beschrieben (Ansprache an Deniz, Live-Link, SERP-Preview, Keyword-Tabelle, lokale Details, Unterschrift "Mercolutio Agent")
+4. `pending-notifications.json` mit committen (git add)
+5. n8n pollt die Datei stündlich und sendet alle noch nicht gesendeten Einträge automatisch
+
+Die `id` muss eindeutig sein (z.B. `messiewohnung-hildesheim`). Bereits gesendete IDs werden von n8n in Static Data gespeichert und nicht erneut gesendet.
+
 ## Deployment
 
 Direct file upload to Apache server — no build step, no CI/CD pipeline. PHP files execute server-side; HTML/CSS/JS served as static assets.
