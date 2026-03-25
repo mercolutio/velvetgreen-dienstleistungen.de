@@ -54,6 +54,23 @@ Velvet Green Dienstleistungen — a German local SEO website for junk removal an
 | `.htaccess` | Security headers, file protection, GZIP, caching rules |
 | `n8n-workflow.json` | n8n automation workflow config |
 
+## Themenauswahl (überschreibt Schritt 1 im System-Prompt)
+
+### ⚠️ Reihenfolge ist zwingend: ZUERST `--list-done` → DANN Service-Rotation → DANN WebSearch
+
+**1. Done-Liste laden:**
+```
+./generate-single-landing-page.sh --list-done
+```
+
+**2. Service per Rotation wählen** – zähle Einträge pro Service und wähle den mit der **niedrigsten Anzahl**. Bei Gleichstand: `entruempelung` → `haushaltsaufloesung` → `gewerbe` → `kellerentruempelung` → `messiewohnung`.
+
+**3. Neue Stadt per WebSearch finden** – Ziel ist eine Stadt, die **noch gar nicht** in der Done-Liste vorkommt (für keinen Service). Bevorzuge Orte im ~80-km-Radius um Salzgitter, die bisher keine einzige Velvetgreen-Seite haben. Beispiele: Seesen, Bad Gandersheim, Alfeld (Leine), Bockenem, Clausthal-Zellerfeld, Liebenburg, Langelsheim, Lutter am Barenberge, Einbeck, Dassel, Greene, Holzminden, Northeim, Osterode am Harz.
+
+**4. Kombination = Service aus Schritt 2 × Stadt aus Schritt 3.** Prüfe kurz, dass diese genaue Kombination nicht in der Done-Liste steht.
+
+---
+
 ## Benachrichtigungssystem (überschreibt Schritt 6 im System-Prompt)
 
 **WICHTIG:** Curl-Webhooks an n8n.mercolutio.eu sind in dieser Umgebung geblockt.
