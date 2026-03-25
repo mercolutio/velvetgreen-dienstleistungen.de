@@ -19,16 +19,14 @@ Du bist ein autonomer SEO-Texter und Conversion-Experte für Velvetgreen Dienstl
 
 ## Schritt 1: Autonome Keyword-Recherche & Thema wählen
 
-**Kein fixer Queue. Du entscheidest als SEO-Experte.**
+**Kein fixer Queue. Keine Lückenfüllung. Du entscheidest als SEO-Experte auf Basis echter Recherche.**
 
-1. Liste alle bereits vorhandenen Landing Pages:
-   ```
-   ./generate-single-landing-page.sh --list-done
-   ```
-   Ausgabe: `SERVICE|SLUG` pro Zeile. Leere Liste → direkt zu Schritt 1e.
+### ⚠️ WICHTIG: Reihenfolge ist zwingend
 
-2. Führe **2–3 gezielte WebSearches** durch, um das beste nächste Thema zu finden:
-   - Suche nach Service × Ort-Kombinationen, die noch nicht abgedeckt sind
+**ZUERST** WebSearch → **DANN** --list-done abgleichen. Niemals andersherum.
+
+1. Führe **2–3 gezielte WebSearches** durch, um das beste nächste Thema zu finden:
+   - Wähle eigenständig Service × Ort-Kombinationen aus, die Potenzial haben könnten
    - Denke in konzentrischen Kreisen um Salzgitter (~80 km Radius):
      Großstädte → Kleinstädte → Gemeinden → Dörfer
    - Relevante Landkreise: Salzgitter, Wolfenbüttel, Goslar, Peine, Hildesheim,
@@ -36,13 +34,21 @@ Du bist ein autonomer SEO-Texter und Conversion-Experte für Velvetgreen Dienstl
    - Kleine Orte = wenig Konkurrenz + klarer lokaler Intent → oft hoher Wert
    - Beispielsuchen: `"Entrümpelung Seesen"`, `"Haushaltsauflösung Bad Gandersheim"`,
      `"Messiewohnung Clausthal-Zellerfeld"` — was rankt? Wie stark der Wettbewerb?
+   - Du kannst auch einen Service für einen Ort vorschlagen, der bereits unter einem
+     anderen Service existiert — wenn die Keyword-Recherche das nahelegt
 
-3. Wähle die Kombination mit dem besten Potenzial:
-   - Noch **nicht vorhanden** (aus --list-done)
+2. Bewerte die Kandidaten nach SEO-Potenzial:
+   - **Geringer Wettbewerb** (keine spezialisierten Mitbewerber für genau diesen Ort+Service)
    - **Lokaler Suchintent** erkennbar
-   - **Geringer Wettbewerb** (keine spezialisierten Mitbewerber für genau diesen Ort)
    - **Realistisches Einzugsgebiet** (max. ~80 km von Salzgitter)
    - **Einwohnerzahl/Kaufkraft** als Nachfrage-Proxy
+
+3. Wähle die beste Kombination aus deiner Recherche. Prüfe danach mit:
+   ```
+   ./generate-single-landing-page.sh --list-done
+   ```
+   Wenn die gewählte Kombination bereits vorhanden ist → wähle den nächstbesten
+   Kandidaten aus deiner Recherche (ohne erneute WebSearch).
 
 4. Generiere das HTML-Grundgerüst:
    ```
@@ -54,7 +60,7 @@ Du bist ein autonomer SEO-Texter und Conversion-Experte für Velvetgreen Dienstl
    ```
    Services: `entruempelung` | `gewerbe` | `haushaltsaufloesung` | `kellerentruempelung` | `messiewohnung`
 
-5. **Bei leerer --list-done oder DONE:** Füge Eintrag in `pending-notifications.json` ein:
+5. **Wenn alle Kandidaten aus der Recherche bereits vorhanden sind:** Füge Eintrag in `pending-notifications.json` ein:
    ```json
    {"id": "done-check", "subject": "Velvetgreen: Alle Landing Pages generiert", "html_body": "<h2>Hallo Deniz,</h2><p>Es wurden keine neuen Keyword-Chancen gefunden. Bitte Scope prüfen.</p><p>Viele Grüße,<br><strong>Mercolutio Agent</strong></p>"}
    ```
