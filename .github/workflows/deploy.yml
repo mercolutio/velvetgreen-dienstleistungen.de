@@ -3,7 +3,7 @@ name: Deploy to HostEurope
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
